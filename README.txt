@@ -1,0 +1,3 @@
+This repository contains Python code for a program that allows counting all villager librarian enchantment books. The program will contain a list of all possible enchantments with unit counter next to the enchantment name. When the user has finished updating the list, it can be copied in a format so that the list can be pasted on a book and quill for bookkeeping purposes.
+
+Usually when I visit a village, I write down all the skills and copy them on the book and quill. This program is meant to quicken that process.
