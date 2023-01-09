@@ -1,0 +1,58 @@
+## All Purpose ##
+
+Mending: 1: Repairs the item when gaining XP orbs.
+Unbreaking: 3: Increases item durability.
+Curse of Vanishing: 1: Item destroyed upon death.
+
+
+## Armor ##
+
+Aqua Affinity: 1: Increase the rate of underwater mining speed.
+Blast Protection: 4: Reduces explosion damage and knockback.
+Curse of Binding: 1: Items cannot be removed from armor slots unless the cause is death or breaking.
+Depth Strider: 3: Increases underwater movement speed.
+Feather Falling: 4: Reduces fall damage.
+Fire Protection: 4: Reduces fire damage and burn time.
+Frost Walker: 2: Changes the water source blocks beneath the player into frosted ice and prevents the damage the player would take from standing on magma blocks.
+Projectile Protection: 4: Reduces projectile damage.
+Protection: 4: Reduces most types of damage by 4% for each level.
+Respiration: 3: Extends underwater breathing time.
+Soul Speed: 3: Increases walking speed on soul sand and soul soil.
+Thorns: 3: Reflects some of the damage taken when hit, at the cost of reducing durability.
+
+
+## Melee Weapons ##
+
+Bane of Arthropods: 5: Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish, endermites and bees).
+Efficiency: 5: When applied to an axe it increases the chance that the axe may stun a shield, with the base chance being 25% and a 5% increase for each level of efficiency.
+Fire Aspect: 2: Sets target on fire.
+Looting: 3: Increases amount of loot earned from mobs.
+Impaling: 5: Trident deals additional damage to mobs that spawn naturally in the ocean.
+Knockback: 2: Knocks back mobs away from you when hit.
+Sharpness: 5: Increases weapon damage.
+Smite: 5: Increases damage to undead mobs.
+Sweeping Edge: 3: Increases sweeping attack damage. Available only in Java Edition.
+
+
+## Ranged Weapons ##
+
+Channeling: 1: Trident channels a bolt of lightning toward a hit entity. Functions only during thunderstorms and if the target is unobstructed by opaque blocks.
+Flame: 1: Arrows set targets on fire.
+Impaling: 5: Trident deals additional damage to mobs that spawn naturally in the ocean.
+Infinity: 1: Shooting with projectiles does not consume arrows.
+Loyalty: 3: Trident returns after being thrown. Higher levels reduce the return time.
+Riptide: 3: Trident launches player with itself when thrown. Functions only in water or rain.
+Multishot: 1: Shoot 3 arrows at the cost of one; only one arrow can be recovered.
+Piercing: 4: Arrows pass through multiple entities.
+Power: 5: Increases arrow damage.
+Punch: 2: Increases arrow knockback.
+Quick Charge: 3: Decreases crossbow charging time.
+
+
+## Tools ##
+
+Efficiency: 5: Increases mining speed.
+Fortune: 3: Increases certain item drop chances from blocks.
+Luck of the Sea: 3: Increases rate of fishing rare loot (enchanting books, etc.).
+Lure: 3: Decreases wait time until fish/junk/loot “bites”.
+Silk Touch: 1: Mined blocks will drop as blocks instead of breaking into other items/blocks.
