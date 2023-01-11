@@ -29,12 +29,12 @@ class Item_counter:
 		self.ID_number = ID_number
 		self.count = count
 
-	def increase_count():
-		count += 1
+	def increase_count(self):
+		self.count += 1
 
-	def decrease_count():
-		if count > 0:
-			count -= 1
+	def decrease_count(self):
+		if self.count > 0:
+			self.count -= 1
 		else:
 			print("Amount can't be decreased.")
 
@@ -106,13 +106,16 @@ def print_table(list_of_enchantments):
 
 
 def select_enchantment_from_list(list_of_enchantments):
+
+	print_table(list_of_enchantments)
+	print()
 	ID_flag = False
 
 	while not ID_flag:
 		try:
 			ID = int(input("Select enchantment with ID_number: "))
 
-			if ID not in range(1, 110):
+			if ID not in range(1, len(list_of_enchantments)):
 				print("No enchantment match the given ID.")
 				continue
 
@@ -123,16 +126,40 @@ def select_enchantment_from_list(list_of_enchantments):
 
 	for enchantment in list_of_enchantments:
 		if ID == enchantment[1].ID_number:
-			return enchantment[0], enchantment[1].count
+			return enchantment[1].ID_number, enchantment[0], enchantment[1].count
 
 
-def ask_count_operation():
-	pass
+def ask_count_operation(ID, count, list_of_enchantments):
+	operation_flag = False
+	while not operation_flag:
+
+		print("To increase enchantment count by 1, write 'i'")
+		print("To decrease enchantment count by 1, write 'd'")
+		operation = input("Please choose 'i' or 'd', or return to enchantment selection with 'r': ")
+		operation.lower().strip()
+		selected_enchantment = Item_counter(ID, count)
+
+		if operation == "i":
+			selected_enchantment.increase_count()
+			print(selected_enchantment.ID_number, selected_enchantment.count)
+
+		elif operation == "d":
+			selected_enchantment.decrease_count()
+
+		elif operation == "r":
+			select_enchantment_from_list(list_of_enchantments)
+
+		else:
+			print("Invalid selection.")
+			continue
+
+
+		operation_flag = True
+
 
 
 
 enchantments_dict = save_enchantment_with_attributes_to_dict()
 list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
-print_table(list_of_enchantments)
-enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
-operation = ask_count_operation()
+enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
+operation = ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
