@@ -23,18 +23,16 @@ class Enchantment:
 
 
 # class to count amount of enchantment books.
-class Item_counter(Enchantment):
-
-	def __init__(self, amount):
-		Enchantment.__init(self, enchantment_name, max_level, description)
-		self.amount = 0
+class Item_counter:
+	
+	amount = 0
 
 	def increase_amount():
-		self.amount += 1
+		amount += 1
 
 	def decrease_amount():
-		if self.amount > 0:
-			self.amount -= 1
+		if amount > 0:
+			amount -= 1
 		else:
 			print("Amount can't be decreased.")
 
