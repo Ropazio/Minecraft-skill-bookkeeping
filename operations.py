@@ -6,17 +6,17 @@ class Enchantment:
 		self.description = description
 		self.max_level = max_level
 
-	def increase_level():
-		if level < self.max_level:
-			level += 1
-		else:
-			print("Level can't be increased.")
-
-	def decrease_level():
-		if 1 < level < self.max_level:
-			level -= 1
-		else:
-			print("Level can't be decreased.")
+#	def increase_level():
+#		if level < self.max_level:
+#			level += 1
+#		else:
+#			print("Level can't be increased.")
+#
+#	def decrease_level():
+#		if 1 < level < self.max_level:
+#			level -= 1
+#		else:
+#			print("Level can't be decreased.")
 
 	def view_description():
 		print(self.description)
@@ -24,15 +24,17 @@ class Enchantment:
 
 # class to count amount of enchantment books.
 class Item_counter:
-	
-	amount = 0
 
-	def increase_amount():
-		amount += 1
+	def __init__(self, ID_number, count):
+		self.ID_number = ID_number
+		self.count = count
 
-	def decrease_amount():
-		if amount > 0:
-			amount -= 1
+	def increase_count():
+		count += 1
+
+	def decrease_count():
+		if count > 0:
+			count -= 1
 		else:
 			print("Amount can't be decreased.")
 
@@ -81,19 +83,56 @@ def save_all_enchantments_to_list(enchantments_dict):
 	# creating an empty list containing enchantments from all skill levels.
 	list_of_enchantments = []
 
+	ID = 0
 	# print all possible enchantments.
 	for enchantment_key in enchantments_dict:
 		for enchantment_level in range(int(enchantments_dict[enchantment_key].max_level)):
+			ID += 1
 			if int(enchantments_dict[enchantment_key].max_level) == 1:
-				list_of_enchantments.append(enchantment_key)
+				enchantment = [enchantment_key, Item_counter(ID, 0)]
+				list_of_enchantments.append(enchantment)
 
 			else:
-				list_of_enchantments.append(enchantment_key + " " + (change_number_to_roman(enchantment_level)))
+				enchantment = [(enchantment_key + " " + (change_number_to_roman(enchantment_level))), Item_counter(ID, 0)]
+				list_of_enchantments.append(enchantment)
 
 	return list_of_enchantments
+
+
+# print ID_number, enchantment with level and count
+def print_table(list_of_enchantments):
+	for enchantment in list_of_enchantments:
+		print(enchantment[1].ID_number, enchantment[0], enchantment[1].count)
+
+
+def select_enchantment_from_list(list_of_enchantments):
+	ID_flag = False
+
+	while not ID_flag:
+		try:
+			ID = int(input("Select enchantment with ID_number: "))
+
+			if ID not in range(1, 110):
+				print("No enchantment match the given ID.")
+				continue
+
+			ID_flag = True
+
+		except ValueError:
+			print("Invalid ID. You need to provide an ID number.")
+
+	for enchantment in list_of_enchantments:
+		if ID == enchantment[1].ID_number:
+			return enchantment[0], enchantment[1].count
+
+
+def ask_count_operation():
+	pass
 
 
 
 enchantments_dict = save_enchantment_with_attributes_to_dict()
 list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
-
+print_table(list_of_enchantments)
+enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
+operation = ask_count_operation()
