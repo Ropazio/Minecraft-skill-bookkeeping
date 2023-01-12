@@ -31,13 +31,22 @@ class Item_counter:
 
 	def increase_count(self):
 		self.count += 1
+		update_table(self.ID_number, self.count)
 
 	def decrease_count(self):
+		error = False
+
 		if self.count > 0:
 			self.count -= 1
+
 		else:
 			print("Amount can't be decreased.")
+			print()
+			error = True
+			return error
 
+
+		update_table(self.ID_number, self.count)
 
 
 def change_number_to_roman(enchantment_level):
@@ -99,30 +108,42 @@ def save_all_enchantments_to_list(enchantments_dict):
 	return list_of_enchantments
 
 
-# print ID_number, enchantment with level and count
-def print_table(list_of_enchantments):
+# print ID_number, enchantment with level and count of the updated table.
+def update_table(ID, count):
 	for enchantment in list_of_enchantments:
-		print(enchantment[1].ID_number, enchantment[0], enchantment[1].count)
+		if ID == enchantment[1].ID_number:
+			enchantment[1].count = count
+
+	return
+
+# print ID_number, enchantment with level and count.
+def print_table(list_of_enchantments):
+	print()
+	print(f"{'ID':<4} {'Enchantment name':<26} {'Count'}")
+	print()
+	for enchantment in list_of_enchantments:
+		print(f"{enchantment[1].ID_number:<4} {enchantment[0]:<26} {enchantment[1].count}")
+	print()
 
 
 def select_enchantment_from_list(list_of_enchantments):
 
-	print_table(list_of_enchantments)
-	print()
 	ID_flag = False
 
 	while not ID_flag:
 		try:
-			ID = int(input("Select enchantment with ID_number: "))
+			ID = int(input("Select enchantment with ID number: "))
 
-			if ID not in range(1, len(list_of_enchantments)):
+			if ID not in range(1, (len(list_of_enchantments) + 1)):
 				print("No enchantment match the given ID.")
+				print()
 				continue
 
 			ID_flag = True
 
 		except ValueError:
 			print("Invalid ID. You need to provide an ID number.")
+			print()
 
 	for enchantment in list_of_enchantments:
 		if ID == enchantment[1].ID_number:
@@ -133,21 +154,35 @@ def ask_count_operation(ID, count, list_of_enchantments):
 	operation_flag = False
 	while not operation_flag:
 
+		print()
 		print("To increase enchantment count by 1, write 'i'")
 		print("To decrease enchantment count by 1, write 'd'")
+		print()
 		operation = input("Please choose 'i' or 'd', or return to enchantment selection with 'r': ")
+		print()
 		operation.lower().strip()
 		selected_enchantment = Item_counter(ID, count)
 
 		if operation == "i":
 			selected_enchantment.increase_count()
-			print(selected_enchantment.ID_number, selected_enchantment.count)
+			print_table(list_of_enchantments)
+			select_enchantment_from_list(list_of_enchantments)
+			continue
 
 		elif operation == "d":
-			selected_enchantment.decrease_count()
+			error = selected_enchantment.decrease_count()
+
+			if error:
+				select_enchantment_from_list(list_of_enchantments)
+
+			print_table(list_of_enchantments)
+			select_enchantment_from_list(list_of_enchantments)
+			continue
+
 
 		elif operation == "r":
 			select_enchantment_from_list(list_of_enchantments)
+			continue
 
 		else:
 			print("Invalid selection.")
@@ -158,8 +193,9 @@ def ask_count_operation(ID, count, list_of_enchantments):
 
 
 
-
-enchantments_dict = save_enchantment_with_attributes_to_dict()
-list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
-enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
-operation = ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
+if __name__ == "__main__":
+	enchantments_dict = save_enchantment_with_attributes_to_dict()
+	list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
+	print_table(list_of_enchantments)
+	enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
+	operation = ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
