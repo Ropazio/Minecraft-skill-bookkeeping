@@ -132,9 +132,14 @@ def select_enchantment_from_list(list_of_enchantments):
 
 	while not ID_flag:
 		try:
-			ID = int(input("Select enchantment with ID number: "))
+			print("Select an enchantment by writing the corresponding ID number.")
+			print("Quit and save the current list of enchantments by writing '0'")
+			ID = int(input("Please select an enchantment or quit: "))
 
-			if ID not in range(1, (len(list_of_enchantments) + 1)):
+			if ID == 0:
+				quit_and_save_list(list_of_enchantments)
+
+			elif ID not in range(1, (len(list_of_enchantments) + 1)):
 				print("No enchantment match the given ID.")
 				print()
 				continue
@@ -149,7 +154,7 @@ def select_enchantment_from_list(list_of_enchantments):
 		if ID == enchantment[1].ID_number:
 			return enchantment[1].ID_number, enchantment[0], enchantment[1].count
 
-	raise Exception("Sorry, an unknown error occured with the ID")
+	raise Exception("Sorry, an unknown error occured with the ID. :(")
 
 
 def ask_count_operation(ID, count, list_of_enchantments):
@@ -159,8 +164,9 @@ def ask_count_operation(ID, count, list_of_enchantments):
 		print()
 		print("To increase enchantment count by 1, write 'i'")
 		print("To decrease enchantment count by 1, write 'd'")
+		print("Return to enchantment selection with 'r'")
 		print()
-		operation = input("Please choose 'i' or 'd', or return to enchantment selection with 'r': ")
+		operation = input("Please make a selection: ")
 		print()
 		operation.lower().strip()
 		selected_enchantment = Item_counter(ID, count)
@@ -168,32 +174,56 @@ def ask_count_operation(ID, count, list_of_enchantments):
 		if operation == "i":
 			selected_enchantment.increase_count()
 			print_table(list_of_enchantments)
-			return True
+			return
 
 		elif operation == "d":
 			error = selected_enchantment.decrease_count()
 
 			if error:
-				return True
+				return
 
 			print_table(list_of_enchantments)
-			return True
+			return
 
 
 		elif operation == "r":
-			return True
+			return
 
 		else:
 			print("Invalid selection.")
 			continue
-			
+
+
+def quit_and_save_list(list_of_enchantments):
+	file_number = 0
+	while True:
+		try:
+			saved_enchantments_file = open(f"enchantments_list{file_number}.txt", "x")
+			saved_enchantments_file.write(f"{'ID':<4} {'Enchantment name':<26} {'Count'}" + "\n\n")
+			for row in list_of_enchantments:
+				saved_enchantments_file.write(f"{row[1].ID_number:<4} {row[0]:<26} {row[1].count}" + "\n")
+			saved_enchantments_file.close()
+			break
+
+		except FileExistsError:
+			file_number += 1
+			continue
+
+	print()
+	print("File saved! Happy minecrafting!")
+	print()
+	
+	quit()
+
 
 
 if __name__ == "__main__":
 	enchantments_dict = save_enchantment_with_attributes_to_dict()
 	list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
 	print_table(list_of_enchantments)
-	operation = True
-	while operation:
+
+	while True:
 		enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
-		operation = ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
+		ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
+
+	quit_and_save_list(list_of_enchantments)
