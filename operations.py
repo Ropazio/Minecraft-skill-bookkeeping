@@ -149,10 +149,12 @@ def select_enchantment_from_list(list_of_enchantments):
 		if ID == enchantment[1].ID_number:
 			return enchantment[1].ID_number, enchantment[0], enchantment[1].count
 
+	raise Exception("Sorry, an unknown error occured with the ID")
+
 
 def ask_count_operation(ID, count, list_of_enchantments):
-	operation_flag = False
-	while not operation_flag:
+
+	while True:
 
 		print()
 		print("To increase enchantment count by 1, write 'i'")
@@ -166,36 +168,32 @@ def ask_count_operation(ID, count, list_of_enchantments):
 		if operation == "i":
 			selected_enchantment.increase_count()
 			print_table(list_of_enchantments)
-			select_enchantment_from_list(list_of_enchantments)
-			continue
+			return True
 
 		elif operation == "d":
 			error = selected_enchantment.decrease_count()
 
 			if error:
-				select_enchantment_from_list(list_of_enchantments)
+				return True
 
 			print_table(list_of_enchantments)
-			select_enchantment_from_list(list_of_enchantments)
-			continue
+			return True
 
 
 		elif operation == "r":
-			select_enchantment_from_list(list_of_enchantments)
-			continue
+			return True
 
 		else:
 			print("Invalid selection.")
 			continue
-
-
-		operation_flag = True
-
+			
 
 
 if __name__ == "__main__":
 	enchantments_dict = save_enchantment_with_attributes_to_dict()
 	list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
 	print_table(list_of_enchantments)
-	enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
-	operation = ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
+	operation = True
+	while operation:
+		enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
+		operation = ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
