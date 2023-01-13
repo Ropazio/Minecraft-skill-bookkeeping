@@ -50,7 +50,7 @@ def change_number_to_roman(enchantment_level):
 	elif enchantment_level == 4:
 		return "V"
 	else:
-		print("[invalid level]")
+		print("[invalid level]" + "\n")
 
 
 # Read the "enchantments.txt" file and save the enchantment name, its maximum level and description
@@ -130,7 +130,7 @@ def select_enchantment_from_list(list_of_enchantments):
 		try:
 			print("Select an enchantment by writing the corresponding ID number.")
 			print("Quit and save the current list of enchantments by writing '0'")
-			ID = int(input("Please select an enchantment or quit: "))
+			ID = int(input("Please select an enchantment with the corresponding ID or quit: "))
 
 			# Quit and save list of enchantments.
 			if ID == 0:
@@ -138,27 +138,26 @@ def select_enchantment_from_list(list_of_enchantments):
 
 			# If the given ID number is not in the list of enchantments ID column, print error and ask for the ID again.
 			elif ID not in range(1, (len(list_of_enchantments) + 1)):
-				print("No enchantment match the given ID.")
-				print()
+				print("No enchantment match the given ID." + "\n")
 				continue
 
 			ID_flag = True
 
 		except ValueError:
-			print("Invalid ID. You need to provide an ID number.")
-			print()
+			print("Invalid ID. You need to provide an ID number." + "\n")
+
 
 	# Return ID, enchantment name and enchantment count for the ask_count_operation function.
 	for enchantment in list_of_enchantments:
 		if ID == enchantment[1].ID_number:
 			return enchantment[1].ID_number, enchantment[0], enchantment[1].count
 
-	raise Exception("Sorry, an unknown error occured with the ID. :(")
+	raise Exception("Sorry, an unknown error occured with the ID. :(" + "\n")
 
 
 # Ask the user if they would like to increase or decrease enchantment (book) count.
 # The user may also return to the ID selection if they accidentally make a mistake.
-def ask_count_operation(ID, count, list_of_enchantments, enchantments_dict):
+def ask_count_operation(ID, name, count, list_of_enchantments, enchantments_dict):
 
 	while True:
 
@@ -195,14 +194,21 @@ def ask_count_operation(ID, count, list_of_enchantments, enchantments_dict):
 
 		# View description
 		elif operation == "v":
+			for enchantment_key in enchantments_dict:
+				if enchantment_key in name:
+					print(f"{enchantment_key}:" + enchantments_dict[enchantment_key].description)
+					return
+				else:
+					continue
 
+				raise Exception("Sorry, the description was not found. :(" + "\n")
 
 		# None of the above.
 		else:
-			print("Invalid selection.")
+			print("Invalid selection." + "\n")
 			continue
 
-	raise Exception("Sorry, an unknown error occured with the operation. :(")
+	raise Exception("Sorry, an unknown error occured with the operation. :(" + "\n")
 
 
 
@@ -241,7 +247,7 @@ if __name__ == "__main__":
 	print_table(list_of_enchantments)
 	while True:
 		enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
-		ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments, enchantments_dict)
+		ask_count_operation(enchantment_ID, enchantment_name, enchantment_count, list_of_enchantments, enchantments_dict)
 
 	# When user is done, save the list and quit.
 	quit_and_save_list(list_of_enchantments)
