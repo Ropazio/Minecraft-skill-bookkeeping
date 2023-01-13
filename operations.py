@@ -1,4 +1,4 @@
-# class with information from enchantments.txt.
+# Class containing information from the "enchantments.txt" file.
 class Enchantment:
 	
 	def __init__(self, enchantment_name, max_level, description):
@@ -6,23 +6,11 @@ class Enchantment:
 		self.description = description
 		self.max_level = max_level
 
-#	def increase_level():
-#		if level < self.max_level:
-#			level += 1
-#		else:
-#			print("Level can't be increased.")
-#
-#	def decrease_level():
-#		if 1 < level < self.max_level:
-#			level -= 1
-#		else:
-#			print("Level can't be decreased.")
-
 	def view_description():
 		print(self.description)
 
 
-# class to count amount of enchantment books.
+# Class to count amount of enchantment books. The book is identified with an ID number.
 class Item_counter:
 
 	def __init__(self, ID_number, count):
@@ -49,6 +37,7 @@ class Item_counter:
 		update_table(self.ID_number, self.count)
 
 
+# Change numbers 1, 2, 3, 4 and 5 to I, II, III, IV and V.
 def change_number_to_roman(enchantment_level):
 	if enchantment_level == 0:
 		return "I"
@@ -64,11 +53,13 @@ def change_number_to_roman(enchantment_level):
 		print("[invalid level]")
 
 
+# Read the "enchantments.txt" file and save the enchantment name, its maximum level and description
+# to a dictionary.
 def save_enchantment_with_attributes_to_dict():
-	# creating an empty dictionary: [enchantment_name]: enchantment_name, max_level, description.
+	# Creating an empty dictionary: [enchantment_name]: enchantment_name, max_level, description.
 	enchantments_dict = {}
 
-	# opening and reading the file line by line dismissing comment lines and empty lines.
+	# Opening and reading the file line by line dismissing comment lines and empty lines.
 	enchantments_file = open("enchantments.txt", "r")
 
 	for line in enchantments_file.readlines():
@@ -82,18 +73,19 @@ def save_enchantment_with_attributes_to_dict():
 			enchantment_with_attributes = Enchantment(enchantment_name, max_level, description)
 			enchantments_dict[enchantment_name] = enchantment_with_attributes
 
-	# close the file
+	# Close the file
 	enchantments_file.close()
 
 	return enchantments_dict
 
 
+# Create a list containing all possible enchantments with levels, the corresponding (book) count and ID number. 
 def save_all_enchantments_to_list(enchantments_dict):
-	# creating an empty list containing enchantments from all skill levels.
+
+	# Creating an empty list containing enchantments from all skill levels.
 	list_of_enchantments = []
 
 	ID = 0
-	# print all possible enchantments.
 	for enchantment_key in enchantments_dict:
 		for enchantment_level in range(int(enchantments_dict[enchantment_key].max_level)):
 			ID += 1
@@ -108,7 +100,7 @@ def save_all_enchantments_to_list(enchantments_dict):
 	return list_of_enchantments
 
 
-# print ID_number, enchantment with level and count of the updated table.
+# Update the list of enchantments.
 def update_table(ID, count):
 	for enchantment in list_of_enchantments:
 		if ID == enchantment[1].ID_number:
@@ -116,7 +108,9 @@ def update_table(ID, count):
 
 	return
 
-# print ID_number, enchantment with level and count.
+
+# Print columns with headlines "ID", "enchantment name" and "count".
+# Print the list of enchantments.
 def print_table(list_of_enchantments):
 	print()
 	print(f"{'ID':<4} {'Enchantment name':<26} {'Count'}")
@@ -126,6 +120,8 @@ def print_table(list_of_enchantments):
 	print()
 
 
+# Ask the user to select an enchantment from the list by giving the corresponding ID number.
+# The user may also quit and save the created list of enchantments.
 def select_enchantment_from_list(list_of_enchantments):
 
 	ID_flag = False
@@ -136,9 +132,11 @@ def select_enchantment_from_list(list_of_enchantments):
 			print("Quit and save the current list of enchantments by writing '0'")
 			ID = int(input("Please select an enchantment or quit: "))
 
+			# Quit and save list of enchantments.
 			if ID == 0:
 				quit_and_save_list(list_of_enchantments)
 
+			# If the given ID number is not in the list of enchantments ID column, print error and ask for the ID again.
 			elif ID not in range(1, (len(list_of_enchantments) + 1)):
 				print("No enchantment match the given ID.")
 				print()
@@ -150,6 +148,7 @@ def select_enchantment_from_list(list_of_enchantments):
 			print("Invalid ID. You need to provide an ID number.")
 			print()
 
+	# Return ID, enchantment name and enchantment count for the ask_count_operation function.
 	for enchantment in list_of_enchantments:
 		if ID == enchantment[1].ID_number:
 			return enchantment[1].ID_number, enchantment[0], enchantment[1].count
@@ -157,25 +156,30 @@ def select_enchantment_from_list(list_of_enchantments):
 	raise Exception("Sorry, an unknown error occured with the ID. :(")
 
 
-def ask_count_operation(ID, count, list_of_enchantments):
+# Ask the user if they would like to increase or decrease enchantment (book) count.
+# The user may also return to the ID selection if they accidentally make a mistake.
+def ask_count_operation(ID, count, list_of_enchantments, enchantments_dict):
 
 	while True:
 
 		print()
-		print("To increase enchantment count by 1, write 'i'")
-		print("To decrease enchantment count by 1, write 'd'")
-		print("Return to enchantment selection with 'r'")
+		print("Increase enchantment (book) count by 1 with 'i'.")
+		print("Decrease enchantment (book) count by 1 with 'd'.")
+		print("View the enchantment description with 'v'.")
+		print("Return to enchantment selection with 'r'.")
 		print()
 		operation = input("Please make a selection: ")
 		print()
 		operation.lower().strip()
 		selected_enchantment = Item_counter(ID, count)
 
+		# Increase
 		if operation == "i":
 			selected_enchantment.increase_count()
 			print_table(list_of_enchantments)
 			return
 
+		# Decrease
 		elif operation == "d":
 			error = selected_enchantment.decrease_count()
 
@@ -185,15 +189,26 @@ def ask_count_operation(ID, count, list_of_enchantments):
 			print_table(list_of_enchantments)
 			return
 
-
+		# Return
 		elif operation == "r":
 			return
 
+		# View description
+		elif operation == "v":
+
+
+		# None of the above.
 		else:
 			print("Invalid selection.")
 			continue
 
+	raise Exception("Sorry, an unknown error occured with the operation. :(")
 
+
+
+# This function saves the list of enchantments to an "enchantment_list.txt" file followed by
+# a list of enchantments where the count is more than 0 in Minecraft book and quill format
+# to be copied and pasted in the book.
 def quit_and_save_list(list_of_enchantments):
 	file_number = 0
 	while True:
@@ -205,14 +220,14 @@ def quit_and_save_list(list_of_enchantments):
 			saved_enchantments_file.close()
 			break
 
-		except FileExistsError:
+		except FileExistsError:	# If enchantment_list0.txt already exists, increase create file enchantments_list1.txt.
 			file_number += 1
 			continue
 
 	print()
 	print("File saved! Happy minecrafting!")
 	print()
-	
+
 	quit()
 
 
@@ -220,10 +235,13 @@ def quit_and_save_list(list_of_enchantments):
 if __name__ == "__main__":
 	enchantments_dict = save_enchantment_with_attributes_to_dict()
 	list_of_enchantments = save_all_enchantments_to_list(enchantments_dict)
-	print_table(list_of_enchantments)
 
+	# Print the list of enchantments for the user and ask the user to select an enchantment from the list.
+	# Then ask the user if they would like to increase or decrease the enchantment (book) count.
+	print_table(list_of_enchantments)
 	while True:
 		enchantment_ID, enchantment_name, enchantment_count = select_enchantment_from_list(list_of_enchantments)
-		ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments)
+		ask_count_operation(enchantment_ID, enchantment_count, list_of_enchantments, enchantments_dict)
 
+	# When user is done, save the list and quit.
 	quit_and_save_list(list_of_enchantments)
