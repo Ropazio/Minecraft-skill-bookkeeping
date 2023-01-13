@@ -54,5 +54,5 @@ Quick Charge: 3: Decreases crossbow charging time.
 Efficiency: 5: Increases mining speed.
 Fortune: 3: Increases certain item drop chances from blocks.
 Luck of the Sea: 3: Increases rate of fishing rare loot (enchanting books, etc.).
-Lure: 3: Decreases wait time until fish/junk/loot “bites”.
+Lure: 3: Decreases wait time until fish/junk/loot "bites".
 Silk Touch: 1: Mined blocks will drop as blocks instead of breaking into other items/blocks.

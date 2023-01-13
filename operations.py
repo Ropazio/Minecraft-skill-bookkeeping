@@ -301,6 +301,7 @@ def quit_and_save_list(list_of_enchantments):
 	quit()
 
 
+# Check if the enchantment name is too long for Minecraft book and quill.
 def check_enchantment_length(enchantment):
 	if len(enchantment) > 19:
 		return True
@@ -308,6 +309,8 @@ def check_enchantment_length(enchantment):
 	else:
 		return False
 
+
+# Divide enchantment name and count to two lines to fit in Minecraft book and quill.
 def divide_enchantment_to_two_and_add_to_list(enchantment, b_and_q_list):
 	max_length_with_dash = 18
 	for i in range(0, len(enchantment), max_length_with_dash):
@@ -315,6 +318,7 @@ def divide_enchantment_to_two_and_add_to_list(enchantment, b_and_q_list):
 			b_and_q_list.append(enchantment[i:i+max_length_with_dash] + "-" + "\n")
 		else:
 			b_and_q_list.append(enchantment[i:i+max_length_with_dash] + "\n")
+
 
 
 if __name__ == "__main__":
