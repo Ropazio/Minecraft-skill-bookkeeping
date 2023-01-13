@@ -217,18 +217,82 @@ def ask_count_operation(ID, name, count, list_of_enchantments, enchantments_dict
 # to be copied and pasted in the book.
 def quit_and_save_list(list_of_enchantments):
 	file_number = 0
-	while True:
+	save = True
+	while save:
 		try:
+			# Create "enchantments_list.txt" file.
 			saved_enchantments_file = open(f"enchantments_list{file_number}.txt", "x")
+			# Create empty list for minecraft book and quill.
+			minecraft_enchantments_list = []
+
+			# Print list of enchantments with labels on top.
 			saved_enchantments_file.write(f"{'ID':<4} {'Enchantment name':<26} {'Count'}" + "\n\n")
+
 			for row in list_of_enchantments:
 				saved_enchantments_file.write(f"{row[1].ID_number:<4} {row[0]:<26} {row[1].count}" + "\n")
+
+				# If number of enchantments is more than one, add it to the Minecraft list for the book and quill.
+				if row[1].count > 0:
+					line = f"- {row[0]} x {row[1].count}"
+					minecraft_enchantments_list.append(line)
+
+				else:
+					continue
+
+			# Print Minecraft enchantment list for book and quill.
+			# Minecraft book and quill page maximum number of rows per page is 14.
+			# It is possible to contain 19 standard sized characters per line (dot size = 5)
+			saved_enchantments_file.write("\n\n" + "List to be printed in Minecraft book and quill in format '- [enchantment name] x [count]'" + "\n\n" )
+			b_and_q_list = []
+
+			# If the enchantment name with count is longer than 19 characters, divide it to two rows.
+			# If the list containing multiline skill is longer than 12 rows, make an empty line
+			# because it is not nice to have the skill divided onto different pages.
+			for enchantment in minecraft_enchantments_list:
+				too_long = check_enchantment_length(enchantment)
+				# If the enchantment name is too long and the list is max. 12 rows long
+				# divide the name and add it to the list.
+				if too_long and len(b_and_q_list) < 13:
+					divide_enchantment_to_two_and_add_to_list(enchantment, b_and_q_list)
+
+				# If the enchantment name is too long and the list is 13 rows long
+				# write existing list to the file, empty the list, divide the name and add it to the list.
+				elif too_long and len(b_and_q_list) == 13:
+					saved_enchantments_file.writelines(b_and_q_list)
+					saved_enchantments_file.write("\n")
+					b_and_q_list.clear()
+					divide_enchantment_to_two_and_add_to_list(enchantment, b_and_q_list)
+
+				# If the enchantment name not too long and the list is max. 13 rows long
+				# add the enchantment to the list.
+				elif len(b_and_q_list) < 14:
+					b_and_q_list.append(enchantment + "\n")
+
+				# If the page is full (list is 14 rows long), make empty line,
+				# empty the list and add the enchantment to the empty list.
+				else:
+					saved_enchantments_file.writelines(b_and_q_list)
+					saved_enchantments_file.write("\n")
+					b_and_q_list.clear()
+					if too_long:
+						divide_enchantment_to_two_and_add_to_list(enchantment, b_and_q_list)
+					else:
+						b_and_q_list.append(enchantment + "\n")
+
+
+			saved_enchantments_file.writelines(b_and_q_list)
 			saved_enchantments_file.close()
-			break
+
 
 		except FileExistsError:	# If enchantment_list0.txt already exists, increase create file enchantments_list1.txt.
 			file_number += 1
+			if file_number > 10:
+				print("\n" + "Too many 'enchantment_list.txt' files. Please don't let there exist more than 10 at a time.")
+				save = False
+				break
 			continue
+
+		save = False
 
 	print()
 	print("File saved! Happy minecrafting!")
@@ -236,6 +300,21 @@ def quit_and_save_list(list_of_enchantments):
 
 	quit()
 
+
+def check_enchantment_length(enchantment):
+	if len(enchantment) > 19:
+		return True
+	
+	else:
+		return False
+
+def divide_enchantment_to_two_and_add_to_list(enchantment, b_and_q_list):
+	max_length_with_dash = 18
+	for i in range(0, len(enchantment), max_length_with_dash):
+		if i == 0:	
+			b_and_q_list.append(enchantment[i:i+max_length_with_dash] + "-" + "\n")
+		else:
+			b_and_q_list.append(enchantment[i:i+max_length_with_dash] + "\n")
 
 
 if __name__ == "__main__":
