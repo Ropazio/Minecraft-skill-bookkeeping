@@ -61,8 +61,9 @@ def save_enchantment_with_attributes_to_dict():
 
 	# Opening and reading the file line by line dismissing comment lines and empty lines.
 	enchantments_file = open("enchantments.txt", "r")
+	sorted_enchantments_file = sorted(enchantments_file.readlines())
 
-	for line in enchantments_file.readlines():
+	for line in sorted_enchantments_file:
 		line.strip()
 
 		if line.startswith("#") or len(line.strip()) == 0:
@@ -72,6 +73,7 @@ def save_enchantment_with_attributes_to_dict():
 			enchantment_name, max_level, description = row
 			enchantment_with_attributes = Enchantment(enchantment_name, max_level, description)
 			enchantments_dict[enchantment_name] = enchantment_with_attributes
+
 
 	# Close the file
 	enchantments_file.close()
@@ -248,6 +250,8 @@ def quit_and_save_list(list_of_enchantments):
 			# If the enchantment name with count is longer than 19 characters, divide it to two rows.
 			# If the list containing multiline skill is longer than 12 rows, make an empty line
 			# because it is not nice to have the skill divided onto different pages.
+
+
 			for enchantment in minecraft_enchantments_list:
 				too_long = check_enchantment_length(enchantment)
 				# If the enchantment name is too long and the list is max. 12 rows long
